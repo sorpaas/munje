@@ -1,0 +1,7 @@
+define factorial
+    factorial 0 1
+    factorial n y
+    (>) n 0
+    (-) n 1 np
+    factorial np yp
+    (*) yp n y
