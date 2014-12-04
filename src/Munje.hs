@@ -3,11 +3,19 @@
 module Main where
 
 import System.IO
+import System.Environment
 import Parser(parseExpression, parseProgram)
 
 main :: IO ()
 main = do
-  inputFile <- openFile "examples/factorial.emj" ReadMode
+  args <- getArgs
+  if null args
+     then putStrLn "Oh, there should be an interactive shell ..."
+     else runFile $ head args
+
+runFile :: String -> IO ()
+runFile filePath = do
+  inputFile <- openFile filePath ReadMode
   inputText <- hGetContents inputFile
   case parseProgram inputText of
     Left err -> print err
