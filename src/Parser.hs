@@ -14,13 +14,19 @@ type Exposed = Selbri
 type Selbri = String
 type Sumti = String
 
-parse :: String -> Either ParseError Expression
-parse = iParse aExpression "example"
+parseExpression :: String -> Either ParseError Expression
+parseExpression = iParse aExpression "example"
+
+parseProgram :: String -> Either ParseError [Expression]
+parseProgram = iParse aProgram "example"
 
 type IParser a = ParsecT String () (State SourcePos) a
 iParse :: IParser a -> SourceName -> String -> Either ParseError a
 iParse aParser sourceName input =
   runIndent sourceName $ runParserT aParser () sourceName input
+
+aProgram :: IParser [Expression]
+aProgram = many1 aExpression
 
 aExpression :: IParser Expression
 aExpression = choice [do

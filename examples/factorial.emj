@@ -5,3 +5,5 @@ define factorial
     (-) n 1 np
     factorial np yp
     (*) yp n y
+
+factorial 5 x
