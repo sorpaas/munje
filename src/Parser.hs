@@ -14,13 +14,22 @@ type Exposed = Selbri
 type Selbri = String
 type Sumti = String
 
-parse :: String -> Either ParseError Girzu
-parse = iParse aGirzu "example"
+parse :: String -> Either ParseError Expression
+parse = iParse aExpression "example"
 
 type IParser a = ParsecT String () (State SourcePos) a
 iParse :: IParser a -> SourceName -> String -> Either ParseError a
 iParse aParser sourceName input =
   runIndent sourceName $ runParserT aParser () sourceName input
+
+aExpression :: IParser Expression
+aExpression = choice [do
+                         girzu <- aGirzu
+                         return $ Right girzu,
+                      do
+                         bridi <- aBridi
+                         return $ Left bridi
+                     ]
 
 aGirzu :: IParser Girzu
 aGirzu = do
