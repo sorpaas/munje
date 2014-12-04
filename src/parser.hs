@@ -1,4 +1,6 @@
-import Text.Parsec hiding (State)
+module Parser where
+
+import Text.Parsec hiding (State, sourceName)
 import Text.Parsec.Indent
 import Control.Monad.State
 
@@ -12,27 +14,13 @@ type Exposed = Selbri
 type Selbri = String
 type Sumti = String
 
+parse :: String -> Either ParseError Girzu
+parse = iParse aGirzu "example"
+
 type IParser a = ParsecT String () (State SourcePos) a
 iParse :: IParser a -> SourceName -> String -> Either ParseError a
 iParse aParser sourceName input =
   runIndent sourceName $ runParserT aParser () sourceName input
-
-inputText :: String
-inputText = unlines [ "define factorial",
-                      "    factorial 0 1",
-                      "    factorial n y",
-                      "    (>) n 0",
-                      "    (-) n 1 np",
-                      "    factorial np yp",
-                      "    (*) yp n y"
-                    ]
-
-main :: IO ()
-main = do
-  putStrLn inputText
-  case iParse aGirzu "example" inputText of
-    Left err -> print err
-    Right result -> putStrLn $ "I parsed: " ++ show result
 
 aGirzu :: IParser Girzu
 aGirzu = do

@@ -1,0 +1,20 @@
+build-type: Simple
+cabal-version: >=1.6
+
+name: munje
+version: 0.0.1
+stability: alpha
+author: sorpa'as plat <sorpaas@gmail.com>
+maintainer: sorpa'as plat <sorpaas@gmail.com>
+homepage: https://github.com/sorpaas/munje
+
+license: MIT
+license-file: LICENSE
+
+category: Language
+synopsis: Time-static Logic Programming Language
+description: Time-static Logic Programming Language
+
+source-repository head
+  type: git
+  location: git://github.com/sorpaas/munje.git
