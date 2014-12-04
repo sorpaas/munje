@@ -18,3 +18,12 @@ description: Time-static Logic Programming Language
 source-repository head
   type: git
   location: git://github.com/sorpaas/munje.git
+
+executable munje
+  hs-source-dirs: src
+  main-is: Munje.hs
+  other-modules: Parser
+  build-depends: base >= 4 && < 5,
+                 mtl >= 2.2.1 && < 2.3,
+                 parsec >= 3.1.7 && < 4,
+                 indents >= 0.3.3 && < 0.4
