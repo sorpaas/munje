@@ -1,6 +1,11 @@
 module Munje.Parser
        ( parseProgram
-       , parseExpression ) where
+       , parseExpression
+       , Bridi(Bridi)
+       , Girzu(Girzu)
+       , Sumti
+       , Selbri
+       , Expression) where
 
 import Text.Parsec hiding (State, sourceName)
 import Text.Parsec.Indent
@@ -14,7 +19,7 @@ data Girzu = Girzu [Exposed] [Bridi]
 
 type Exposed = Selbri
 type Selbri = String
-type Sumti = String
+type Sumti = Selbri
 
 parseExpression :: String -> Either ParseError Expression
 parseExpression = iParse aExpression "example"

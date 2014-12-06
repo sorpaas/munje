@@ -4,16 +4,18 @@
 module Main where
 
 import System.IO
+import System.Exit
 import System.Environment
 import System.Console.Readline
 import Data.List
 import Munje.Parser(parseExpression, parseProgram)
+import Munje.Logic(declare, expToDeclaration)
 
 main :: IO ()
 main = do
   args <- getArgs
   if null args
-     then interactiveShell
+     then interactiveShell readExp
      else runFile $ head args
 
 runFile :: String -> IO ()
@@ -22,19 +24,28 @@ runFile filePath = do
   inputText <- hGetContents inputFile
   case parseProgram inputText of
     Left err -> print err
-    Right result -> putStrLn $ "I parsed: " ++ show result
+    Right result ->
+      let declarations = declare result in do
+        putStrLn $ "I declared: " ++ show declarations
+        interactiveShellLoop (\aLine -> case parseExpression aLine of
+                                 Left err -> print err
+                                 Right r -> putStrLn (if any (\x -> x == expToDeclaration r) declarations then "yes" else "no"))
 
-interactiveShell :: IO ()
-interactiveShell = do
+interactiveShellLoop :: (String -> IO ()) -> IO ()
+interactiveShellLoop readALine = do
+  interactiveShell readALine
+  interactiveShellLoop readALine
+
+interactiveShell :: (String -> IO ()) -> IO ()
+interactiveShell readALine = do
   maybeLine <- readline "% "
   case maybeLine of
-    Nothing -> return ()
-    Just [] -> interactiveShell
-    Just "exit" -> return ()
+    Nothing -> exitWith ExitSuccess
+    Just [] -> return ()
+    Just "exit" -> exitWith ExitSuccess
     Just line -> do if isWrongLine line then putStrLn "Unexpected line ..." else
                       if isGirzu line then girzuMoreInput ([line]) else
-                        readExp line
-                    interactiveShell
+                        readALine line
 
 isWrongLine :: String -> Bool
 isWrongLine (h : _) =
