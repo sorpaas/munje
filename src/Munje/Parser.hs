@@ -1,4 +1,6 @@
-module Parser where
+module Munje.Parser
+       ( parseProgram
+       , parseExpression ) where
 
 import Text.Parsec hiding (State, sourceName)
 import Text.Parsec.Indent
