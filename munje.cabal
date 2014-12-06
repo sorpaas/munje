@@ -21,8 +21,8 @@ source-repository head
 
 executable munje
   hs-source-dirs: src
-  main-is: Munje.hs
-  other-modules: Parser
+  main-is: Main.hs
+  other-modules: Munje
   build-depends: base >= 4 && < 5,
                  mtl >= 2.2.1 && < 2.3,
                  readline >= 1.0.1 && < 1.1,
